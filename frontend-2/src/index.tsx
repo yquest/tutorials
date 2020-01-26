@@ -80,7 +80,7 @@ const header = (title: string) => (
     </h5>
     <nav className="my-2 my-md-0 mr-md-3">
       <a className="p-2 text-dark" href="#">
-        Button example
+        link example
       </a>
     </nav>
     <a className="btn btn-outline-primary" href="#">
@@ -115,15 +115,19 @@ const Bottom = observer(() => (
         <ul className="list-group mb-3">
           {values.list.map((value, idx) => (
             <li key={`idx-${idx}`} className="list-group-item">
-              {`idx=${idx} value=${value} `}
-              <button
-                onClick={removeFromList(idx)}
-                type="button"
-                className="btn btn-primary"
-                data-toggle="button"
-                aria-pressed="false">
-                remove
-              </button>
+            <div className="row">
+              <div className="col-7">{`idx=${idx} value=(${value}) `}</div>
+              <div className="col text-right">
+                <button
+                  onClick={removeFromList(idx)}
+                  type="button"
+                  className="btn btn-primary"
+                  data-toggle="button"
+                  aria-pressed="false">
+                  remove
+                </button>
+              </div>
+              </div>
             </li>
           ))}
         </ul>
