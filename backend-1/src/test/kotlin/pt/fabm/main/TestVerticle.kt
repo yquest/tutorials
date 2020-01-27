@@ -13,10 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(VertxExtension::class)
 class TestVerticle {
 
-    companion object{
-
-    }
-
     @Test
     fun testCallMain(vertx: Vertx, testContext: VertxTestContext) {
         val webVerticle = WebVerticle()
