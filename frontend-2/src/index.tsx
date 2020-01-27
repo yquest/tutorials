@@ -11,24 +11,24 @@ const incrementActions = {
   remove: action,
   addToList: action
 };
-const values = observable(
+const store = observable(
   {
     value1: 0,
     value2: 0,
     list: [] as IObservableArray<string>,
     maxList: 0,
     update1() {
-      values.value1 = values.value1 + 1;
+      store.value1 = store.value1 + 1;
     },
     update2(n: number) {
-      values.value2 = n;
+      store.value2 = n;
     },
     remove(idx: number) {
-      values.list.remove(values.list[idx]);
+      store.list.remove(store.list[idx]);
     },
     addToList() {
-      values.maxList++;
-      values.list.push(`item id:${values.maxList}`);
+      store.maxList++;
+      store.list.push(`item id:${store.maxList}`);
     }
   },
   incrementActions
@@ -36,22 +36,22 @@ const values = observable(
 
 function update1OnClickEvt(e: React.MouseEvent) {
   e.preventDefault();
-  values.update1();
+  store.update1();
 }
 
 function update2OnClickEvt(e: React.MouseEvent) {
   e.preventDefault();
-  values.update2(values.value1);
+  store.update2(store.value1);
 }
 
 function addToList(e) {
   e.preventDefault();
-  values.addToList();
+  store.addToList();
 }
 
 function removeFromList(idx: number): (e: React.MouseEvent) => void {
   return e => {
-    values.remove(idx);
+    store.remove(idx);
     e.preventDefault();
   };
 }
@@ -94,26 +94,26 @@ const Bottom = observer(() => (
     <Card
       title="Card 1"
       evt={update1OnClickEvt}
-      value={values.value1}
+      value={store.value1}
       btn="increment">
       <p>Increment Card</p>
     </Card>
     <Card
       title="Card 2"
       evt={update2OnClickEvt}
-      value={values.value2}
+      value={store.value2}
       btn="copy first">
       <p>Copy value from Card 1</p>
     </Card>
     <Card
       title="Card 3"
       evt={addToList}
-      value={values.list.length}
+      value={store.list.length}
       btn="add to list">
       <p>List length</p>
-      {values.list.length > 0 && (
+      {store.list.length > 0 && (
         <ul className="list-group mb-3">
-          {values.list.map((value, idx) => (
+          {store.list.map((value, idx) => (
             <li key={`idx-${idx}`} className="list-group-item">
             <div className="row">
               <div className="col-7">{`idx=${idx} value=(${value}) `}</div>

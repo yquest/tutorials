@@ -191,9 +191,9 @@ Only added the box-shadow class to give a little effect in the page, you can add
 ***
 
 Install the node modules to render and serve the page
-
-    npm install
-    npm start
-    npm run-script serve-static
-
+```
+npm install
+npm start
+npm run-script serve-static
+```
 Open the browser with url http://localhost:8080
