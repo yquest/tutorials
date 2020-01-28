@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack --mode development",
-    "serve-static": "node_modules/node-static/bin/cli.js dist -p 8080",
+    "serve-static": "node node_modules/node-static/bin/cli.js dist -p 8080",
     "prod": "webpack --mode production"
   },
   "license": "ISC",
