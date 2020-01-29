@@ -1,6 +1,6 @@
 ## Frontend tutorial 2
 
-This tutorial as a prerequisite the [frontend 1 tutorial](../frontend-1/readme.md), and the main goal is to dive into the mbox world to achieve dynamic shared state to several components.  
+This tutorial have as prerequisite the [frontend 1 tutorial](../frontend-1/readme.md), and the main goal is to dive into the mbox world to achieve dynamic shared state to several components.  
 
 The tutorial will be divided in 3 cards each one with a button with a specific behavior that will be explained in depth.
 
