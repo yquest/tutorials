@@ -1,6 +1,6 @@
 ## Frontend tutorial 1
 
-This tutorial aims to share a way of creation a frontend static page with high productive tehlologies and correspondent basic configurations.
+This tutorial aims to share a way of creation a frontend static page with high productive technologies and correspondent basic configurations.
 
 ***
 
