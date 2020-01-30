@@ -80,8 +80,8 @@ module.exports = function(env, argv) {
     contentBase: base.output.path,
     port: 8080,
     before: (app, server, compiler) => {
-      app.all("/api/*", function(req, res, next) {
-        eval("" + fs.readFileSync("./webserver-tests/mock.js"));
+      app.all("/api/*", function(req, res) { // handle all calls with the same server where path starts with /api/
+        eval("" + fs.readFileSync(path.join(basePath, "webserver-tests/mock.js")));
         module.exports(req, res);
         module.exports = {};
       });
