@@ -32,7 +32,7 @@ const store = observable(
     value1: 0,
     value2: 0,
     frontedList: [] as IObservableArray<string>,
-    backendList: [] as IObservableArray<string>,
+    backendList:window["__state"] as IObservableArray<string>,
     maxList: 0,
     update1() {
       store.value1 = store.value1 + 1;

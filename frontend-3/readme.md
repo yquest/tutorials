@@ -1,6 +1,6 @@
 ## Frontend tutorial 3
 
-This tutorial have as prerequisite the [frontend 2 tutorial](../frontend-2/readme.md) now we will start to call a backend service, even if it's simulated we can use as a test.
+This tutorial have as prerequisite the [frontend 2 tutorial](../frontend-2/readme.md) now we will start to call a backend service synchronously and asynchronously, even if it's simulated we can use as a test.
 We added a 4th card to load a list from backend.
 
 ***
@@ -14,7 +14,7 @@ added axios and webpack-dev-server dependencies
 - *loadList* to call backend and load the data to the store 
 
 #### axios
-Axios it's a web client, in our case scenario allow us to call a rest web-service and collect the necessary data to fill the fourth card list.
+Axios it's a web client, in our case scenario allow us to call a rest web-service and load the the necessary data **asynchronously** to fill the fourth card list.
 ```javascript
 function loadList(e: React.MouseEvent) {
   e.preventDefault();
@@ -27,6 +27,38 @@ function loadList(e: React.MouseEvent) {
 #### webpack-dev-server
 As we notice in *package.json* the node-static was removed and replaced with *webpack-dev-server* this give us a few benefits.
 First of all, it's possible to change code and it will be recompiled automatically, second and the best, it's possible to have a dev server configured to serve dynamic content.
+Also the change of *htmlWebpackPlugin* to add a new asset to load synchronously the initial the backendList values in the store.
+
+##### init.js
+```javascript
+  app.get('/tests', function(req, res) {
+    eval("" + fs.readFileSync(path.join(basePath, "webserver-tests/init.js")));
+    module.exports(req, res);
+    module.exports = {};
+  });
+```
+serving the code of init.js as the example
+```javascript
+module.exports = function(req, res) {
+  console.log(`serving initialisation state, page:${req.url}`);
+
+  const state = [
+    "my element 1",
+    "my element 2"
+  ];
+
+  res.writeHead(200, { "Content-Type": "application/javascript" });
+  res.end(`var __state = ${JSON.stringify(state)};`);
+};
+```
+
+The variable __state created is used to load the initial state in the store.
+
+```javascript
+backendList: window["__state"] as IObservableArray<string>,
+```
+
+*The synchronous load will be very useful when we will start to talk about SSR(server side rendering) this is way that we need some data to be rendered in the first time.*
 
 ##### devServer
 In webpack.config.json now we have a new object to configure, the **devServer**

@@ -61,6 +61,7 @@ module.exports = function(env, argv) {
 
   const htmlWebpackPlugin = new HtmlWebpackPlugin({
     templateParameters: (compilation, assets) => {
+      assets.js.unshift("tests");
       return {
         compilation,
         htmlWebpackPlugin: {
@@ -80,6 +81,11 @@ module.exports = function(env, argv) {
     contentBase: base.output.path,
     port: 8080,
     before: (app, server, compiler) => {
+      app.get('/tests', function(req, res) {
+        eval("" + fs.readFileSync(path.join(basePath, "webserver-tests/init.js")));
+        module.exports(req, res);
+        module.exports = {};
+      });
       app.all("/api/*", function(req, res) { // handle all calls with the same server where path starts with /api/
         eval("" + fs.readFileSync(path.join(basePath, "webserver-tests/mock.js")));
         module.exports(req, res);
