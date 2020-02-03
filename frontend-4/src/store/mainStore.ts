@@ -39,3 +39,5 @@ const mainStore = observable(
   },
   mainStoreActions
 );
+
+export const stores = {mainStore};

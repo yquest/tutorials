@@ -86,9 +86,6 @@ module.exports = [function(env, argv) {
         module.exports(req, res);
         module.exports = {};
       });
-      app.get('/sw', function(req, res) {
-        res.sendFile(path.join(basePath, "sw.js"));
-      });
       app.all("/api/*", function(req, res) { // handle all calls with the same server where path starts with /api/
         eval("" + fs.readFileSync(path.join(basePath, "webserver-tests/mock.js")));
         module.exports(req, res);
@@ -98,7 +95,7 @@ module.exports = [function(env, argv) {
   };
 
   return base;
-} ,/*function (env, argv) {
+} ,function (env, argv) {
   const base = {
     context: path.join(basePath, "sw"),
     resolve: {
@@ -126,4 +123,4 @@ module.exports = [function(env, argv) {
   base.entry = ['./sw.ts'];
   base.output.filename = 'sw.js';
   return base;
-}*/];
+}];

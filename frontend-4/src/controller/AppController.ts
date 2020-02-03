@@ -1,13 +1,7 @@
 export namespace app{
     export interface Props{
-        
+        title: string;
+        children: React.ReactElement;      
     }
 
-    function createCarClick(e:React.MouseEvent<any>){
-        
-    }
-
-    export function createProps():Props{
-        return {createCarClick};
-    }
 }
