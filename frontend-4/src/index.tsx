@@ -1,3 +1,5 @@
+import "./content/icon.png";
+import "./content/manifest.json";
 import * as ReactDOM from "react-dom";
 import { main } from "./controller/Main.controller";
 
