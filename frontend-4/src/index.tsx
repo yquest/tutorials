@@ -19,5 +19,4 @@ if ("serviceWorker" in navigator) {
     );
   });
 }
-
 ReactDOM.render(main.createHtml(), document.getElementById("root"));

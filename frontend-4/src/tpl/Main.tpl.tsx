@@ -1,7 +1,9 @@
 import * as React from "react";
 import { App } from "./App.tpl";
 import { Card } from "./Card.tpl";
-import { stores } from "../store/mainStore";
+import { stores } from "../store/stores";
+import { observer } from "mobx-react";
+import { main } from "../controller/Main.controller";
 
 function createList(
   list: string[],
@@ -33,19 +35,13 @@ function createList(
   );
 }
 
-export const html = (
-  update1OnClickEvt: (e: React.MouseEvent) => void,
-  update2OnClickEvt: (e: React.MouseEvent) => void,
-  addToList: (e: React.MouseEvent) => void,
-  removeFromFrontend: (value: string) => (e: React.MouseEvent) => void,
-  removeFromBackend: (value: string) => (e: React.MouseEvent) => void,
-  loadList: (e: React.MouseEvent) => void
-) => (
+export const Main = observer((props: main.Props) => 
+(
   <App title="Example title">
     <div className="row">
       <Card
         title="Card 1"
-        evt={update1OnClickEvt}
+        evt={props.update1OnClickEvt}
         value={stores.mainStore.value1}
         btn="increment"
       >
@@ -53,7 +49,7 @@ export const html = (
       </Card>
       <Card
         title="Card 2"
-        evt={update2OnClickEvt}
+        evt={props.update2OnClickEvt}
         value={stores.mainStore.value2}
         btn="copy first"
       >
@@ -61,22 +57,22 @@ export const html = (
       </Card>
       <Card
         title="Card 3"
-        evt={addToList}
+        evt={props.addToList}
         value={stores.mainStore.frontedList.length}
         btn="add to list"
       >
         <p>List length</p>
-        {createList(stores.mainStore.frontedList, removeFromFrontend)}
+        {createList(stores.mainStore.frontedList, props.removeFromFrontend)}
       </Card>
       <Card
         title="Card 4"
-        evt={loadList}
+        evt={props.loadList}
         value={stores.mainStore.backendList.length}
         btn="load from backend"
       >
         <p>List length</p>
-        {createList(stores.mainStore.backendList, removeFromBackend)}
+        {createList(stores.mainStore.backendList, props.removeFromBackend)}
       </Card>
     </div>
   </App>
-);
+));

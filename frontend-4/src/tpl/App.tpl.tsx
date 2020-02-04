@@ -3,7 +3,9 @@ import { observer } from "mobx-react";
 import { app } from "../controller/AppController";
 import { Navigation } from "./Navigation.tpl";
 
-export const App = observer((props: app.Props) => (
+export const App = observer((props: app.Props) => {
+    console.log("render");
+    return (
   <div>
     <Navigation title="header example" />
     <div className="container">
@@ -13,4 +15,4 @@ export const App = observer((props: app.Props) => (
       {props.children}
     </div>
   </div>
-));
+)});

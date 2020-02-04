@@ -1,6 +1,7 @@
-import { stores } from "../store/mainStore";
+import { stores } from "../store/stores";
 import Axios from "axios";
-import { html } from "../tpl/Main.tpl";
+import { Main } from "../tpl/Main.tpl";
+import * as React from "react";
 
 export namespace main {
   function update1OnClickEvt(e: React.MouseEvent) {
@@ -38,14 +39,17 @@ export namespace main {
     };
   }
 
-  export function createHtml() {
-    return html(
-      update1OnClickEvt,
-      update2OnClickEvt,
-      addToList,
-      removeFromFrontend,
-      removeFromBackend,
-      loadList
-    );
+  export interface Props{
+    update1OnClickEvt: (e: React.MouseEvent) => void;
+    update2OnClickEvt: (e: React.MouseEvent) => void;
+    addToList: (e: React.MouseEvent) => void;
+    removeFromFrontend: (value: string) => (e: React.MouseEvent) => void;
+    removeFromBackend: (value: string) => (e: React.MouseEvent) => void;
+    loadList: (e: React.MouseEvent) => void;
+  }
+
+  export function createHtml():React.ReactElement {
+    const props:Props = {addToList, loadList, removeFromBackend, removeFromFrontend, update1OnClickEvt, update2OnClickEvt};
+    return React.createElement(Main ,props);
   }
 }
