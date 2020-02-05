@@ -92,17 +92,12 @@ module.exports = [
       contentBase: base.output.path,
       port: 8080,
       before: (app, server, compiler) => {
+        eval(
+          "" + fs.readFileSync(path.join(basePath, "webserver-tests/mock.js"))
+        );
         app.get("/tests", function(req, res) {
           eval(
             "" + fs.readFileSync(path.join(basePath, "webserver-tests/init.js"))
-          );
-          module.exports(req, res);
-          module.exports = {};
-        });
-        app.all("/api/*", function(req, res) {
-          // handle all calls with the same server where path starts with /api/
-          eval(
-            "" + fs.readFileSync(path.join(basePath, "webserver-tests/mock.js"))
           );
           module.exports(req, res);
           module.exports = {};

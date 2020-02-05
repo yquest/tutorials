@@ -35,8 +35,7 @@ function createList(
   );
 }
 
-export const Main = observer((props: main.Props) => 
-(
+export const Main = observer((props: main.Props) => (
   <App title="Example title">
     <div className="row">
       <Card
@@ -72,6 +71,16 @@ export const Main = observer((props: main.Props) =>
       >
         <p>List length</p>
         {createList(stores.mainStore.backendList, props.removeFromBackend)}
+      </Card>
+      <Card
+        title="Card 5"
+        evt={props.fireNotification}
+        value={0}
+        btn="fire notification"
+      >
+        <div>
+          <input onChange={props.changeInputMessage} value={stores.mainStore.message}/>
+        </div>
       </Card>
     </div>
   </App>

@@ -2,6 +2,7 @@ import "./content/icon.png";
 import "./content/manifest.json";
 import * as ReactDOM from "react-dom";
 import { main } from "./controller/Main.controller";
+import Axios from "axios";
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -21,4 +22,5 @@ if ("serviceWorker" in navigator) {
     );
   });
 }
+
 ReactDOM.render(main.createHtml(), document.getElementById("root"));

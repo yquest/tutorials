@@ -1,6 +1,6 @@
 declare const clients: any;
 const sw = self as ({ clients: any[] } & ServiceWorkerContainer) | any;
-const cacheName = "v7";
+const cacheName = "v-1";
 const assets = [
   "/",
   "/bundle.js",
@@ -13,11 +13,12 @@ function deleteOldCaches(cacheNames: any) {
   return Promise.all(
     cacheNames
       .filter(function(current) {
-        const currentVersion = cacheName.substring(1);
-        const checkVersion = current.substring(1);
-        return checkVersion < currentVersion;
+        const currentVersion:number = Number(cacheName.substring(1));
+        const checkVersion:number = Number(current.substring(1));
+        return checkVersion < currentVersion || currentVersion == -1;
       })
       .map(function(cacheName) {
+        console.log(`deleting ${cacheName}`);
         return caches.delete(cacheName);
       })
   );
@@ -27,9 +28,10 @@ function cacheOnFetch(request, response, cache) {
   return response;
 }
 
-self.addEventListener("install", function(event: any) {
+sw.addEventListener("install", function(event: any) {
   event.waitUntil(
     caches.open(cacheName).then(function(cache) {
+      console.log(`cache all assets ${cacheName}`);
       return cache.addAll(assets);
     }).then(() => sw.skipWaiting())
   );
@@ -40,6 +42,7 @@ sw.addEventListener("activate", function(event) {
 });
 
 sw.addEventListener("fetch", function(event: any) {
+  console.log(`fetching ${event.request.url}`);
   event.respondWith(
     caches.open(cacheName).then(function(cache) {
       return cache

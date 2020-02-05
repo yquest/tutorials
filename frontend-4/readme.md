@@ -19,8 +19,12 @@ All the controllers have the correspondent namespace in lowercase with the **Pro
  - Card, created in 4 different components within the App component
  
 #### stores 
- In the example we have a single store, the mainStore, however it's possible to have more than one.
+In the example we have a single store, the mainStore, however it's possible to have more than one.
  
 #### service worker
 load the /sw.js as the service worker, compiled from the sw typescript folder.
 cached the 5 assets to be served
+
+#### server send event
+To receive events from server, we add an endpoint /api/sse , this endpoint will kept alive.
+After receive the event we forward to an notification in the browser.
