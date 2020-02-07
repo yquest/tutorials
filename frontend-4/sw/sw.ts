@@ -9,12 +9,14 @@ const assets = [
   "favicon.ico"
 ];
 
+var sse = null;
+
 function deleteOldCaches(cacheNames: any) {
   return Promise.all(
     cacheNames
       .filter(function(current) {
-        const currentVersion:number = Number(cacheName.substring(1));
-        const checkVersion:number = Number(current.substring(1));
+        const currentVersion: number = Number(cacheName.substring(1));
+        const checkVersion: number = Number(current.substring(1));
         return checkVersion < currentVersion || currentVersion == -1;
       })
       .map(function(cacheName) {
@@ -30,10 +32,13 @@ function cacheOnFetch(request, response, cache) {
 
 sw.addEventListener("install", function(event: any) {
   event.waitUntil(
-    caches.open(cacheName).then(function(cache) {
-      console.log(`cache all assets ${cacheName}`);
-      return cache.addAll(assets);
-    }).then(() => sw.skipWaiting())
+    caches
+      .open(cacheName)
+      .then(function(cache) {
+        console.log(`cache all assets ${cacheName}`);
+        return cache.addAll(assets);
+      })
+      .then(() => sw.skipWaiting())
   );
 });
 
@@ -42,11 +47,18 @@ sw.addEventListener("activate", function(event) {
 });
 
 sw.addEventListener("fetch", function(event: any) {
-  console.log(`fetching ${event.request.url}`);
+  const path = event.request.url.substring(location.origin.length);
+  if ("/api/sse" === path) {
+    if(sse != null){
+      console.log("previous sse", sse);
+    }
+    sse = event.request;
+    console.log("current sse", sse);
+  }
   event.respondWith(
     caches.open(cacheName).then(function(cache) {
       return cache
-        .match(event.request, {ignoreSearch: true})
+        .match(event.request, { ignoreSearch: true })
         .then(function(response) {
           const req = event.request;
           if (response && true) {
@@ -58,12 +70,34 @@ sw.addEventListener("fetch", function(event: any) {
               return cacheOnFetch(req, response, cache);
             })
           );
-        })        
+        });
     })
   );
 });
 
+let es:EventSource = null;
+
 sw.addEventListener("message", function handler(event) {
+
+  function listenSSE(evt){
+    console.log(es.readyState);
+    event.ports[0].postMessage(evt.data);
+  }
+
+  if(event.data.command === 'start-sse'){
+    if(es === null){
+      es = new EventSource("/api/sse");
+      es.onopen = evt => {
+        console.log("sse initialized");
+      };
+      es.onmessage = listenSSE;
+      event.ports[0].postMessage({command:"es-init"});
+    }
+  }else if(event.data.command == 'listen-sse'){
+    es.onmessage = listenSSE;
+  }
+
   console.log(event.data);
-  event.ports[0].postMessage("just a test");
 });
+
+

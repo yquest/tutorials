@@ -18,6 +18,9 @@ All the controllers have the correspondent namespace in lowercase with the **Pro
  - Navigation template, is the top component within the app
  - Card, created in 4 different components within the App component
  
+#### util.ts
+ This will be a shared repository of functions and constants to be used in the whole project   
+ 
 #### stores 
 In the example we have a single store, the mainStore, however it's possible to have more than one.
  
@@ -28,3 +31,4 @@ cached the 5 assets to be served
 #### server send event
 To receive events from server, we add an endpoint /api/sse , this endpoint will kept alive.
 After receive the event we forward to an notification in the browser.
+
