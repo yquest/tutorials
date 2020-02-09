@@ -8,7 +8,7 @@ export const App = observer((props: app.Props) => {
     return (
   <div>
     <Navigation title="header example" />
-    <div className="container">
+    <div className="container mt-5">
       <div className="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
         <h1>{props.title}</h1>
       </div>

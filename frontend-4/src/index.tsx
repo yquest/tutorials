@@ -1,7 +1,7 @@
-import "./content/icon.png";
 import "./content/manifest.json";
 import * as ReactDOM from "react-dom";
 import { main } from "./controller/Main.controller";
+import "./content/icon.png"
 
 function twoWayCommunication(options: {
   sw: ServiceWorker;
@@ -22,8 +22,47 @@ function twoWayCommunication(options: {
   );
 }
 
+function notifyMe(message: string) {
+  if (!("Notification" in window)) {
+    alert("This browser does not support desktop notification");
+  } else if (Notification.permission === "granted") {
+    new Notification(message);
+  } else if (Notification.permission !== "denied") {
+    Notification.requestPermission().then(function(permission) {
+      if (permission === "granted") {
+        new Notification(message);
+      }
+    });
+  }
+}
+
+navigator.serviceWorker.ready.then((reg)=>{
+  const sw = reg.active;
+  function handler(evt) {
+    if (evt.data.command === "notification") {
+      notifyMe(evt.data.message);
+    }
+    twoWayCommunication({
+      command: "listen-sse",
+      callback: handler,
+      message: null,
+      sw
+    });
+  }
+
+  twoWayCommunication({
+    command: "start-sse",
+    sw,
+    callback: handler,
+    message: null
+  });
+
+  console.log(reg.active);
+  navigator.serviceWorker.addEventListener("message", handler);
+});
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
+    
     navigator.serviceWorker
       .register("/sw.js")
       .then(
@@ -40,29 +79,6 @@ if ("serviceWorker" in navigator) {
           console.log("ServiceWorker registration failed: ", err);
         }
       )
-      .then((reg: ServiceWorkerRegistration) => {
-        function handler(evt) {
-          twoWayCommunication({
-            command: "listen-sse",
-            callback: handler,
-            message: null,
-            sw: reg.active
-          });
-        }
-
-        twoWayCommunication({
-          command: "start-sse",
-          sw: reg.active,
-          callback: handler,
-          message: null
-        });
-
-        console.log(reg.active);
-        navigator.serviceWorker.addEventListener("message", event => {
-          console.log(event.data);
-        });
-      });
   });
 }
-
 ReactDOM.render(main.createHtml(), document.getElementById("root"));

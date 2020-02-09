@@ -4,8 +4,7 @@ const tick = {
 };
 
 app.use(bodyParser.json());
-var resSse;
-
+var client;
 app.all("/api/*", function(req, res) {
   console.log(`serving url:${req.path} with method ${req.method}`);
   if (req.path === "/api/data") {
@@ -17,20 +16,23 @@ app.all("/api/*", function(req, res) {
     ];
     res.status(200).json(data);
   } else if (req.path == "/api/send") {
-    tick.send(req.body.message);
+    if(tick.send !== null){
+      tick.send(req.body.message);
+    }
     res.end();
   } else if (req.path === "/api/sse") {
-    resSse = res;
-    res.writeHead(200, {
+    client = res;
+    client.writeHead(200, {
       Connection: "keep-alive",
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache"
     });
     tick.send = message => {
-      resSse.write(`data: ${message}\n\n`);
+      console.log(`client.finished = ${client.finished} sent:${message}`);
+      client.write(`data: ${message}\n\n`);
     };
-    res.on("close", () => {
-      if (!res.finished) {
+    client.on("close", () => {
+      if (!client.finished) {
         console.log("CLOSED");
       }
     });

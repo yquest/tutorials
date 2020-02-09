@@ -3,6 +3,11 @@ const path = require("path");
 const fs = require("fs");
 const basePath = __dirname;
 const srcPath = "src";
+const swSrcPath = "sw";
+
+const isInSrc = (file)=>file.startsWith(path.resolve(basePath,srcPath));
+const isNotInSrc = (file)=>!file.startsWith(path.resolve(basePath,srcPath));
+const isNotInSwSrc = (file)=>!file.startsWith(path.resolve(basePath,swSrcPath));
 
 module.exports = [
   function(env, argv) {
@@ -32,6 +37,7 @@ module.exports = [
           {
             test: /\.(png|jpg|gif|svg)$/,
             loader: "file-loader",
+            exclude: isNotInSrc,
             options: {
               name: "assets/img/[name].[ext]?[hash]"
             }
@@ -39,6 +45,7 @@ module.exports = [
           {
             type: "javascript/auto",
             test: /\.(json)/,
+            exclude: isNotInSrc,
             use: [
               {
                 loader: "file-loader",
@@ -48,21 +55,28 @@ module.exports = [
           },
           {
             test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-            loader: "file-loader?mimetype=image/svg+xml"
+            loader: "file-loader?mimetype=image/svg+xml",
+            exclude: isInSrc
           },
           {
             test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-            loader: "file-loader?mimetype=application/font-woff"
+            loader: "file-loader?mimetype=application/font-woff",
+            exclude: isInSrc
           },
           {
             test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-            loader: "file-loader?mimetype=application/font-woff"
+            loader: "file-loader?mimetype=application/font-woff",
+            exclude: isInSrc
           },
           {
             test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-            loader: "file-loader?mimetype=application/octet-stream"
+            loader: "file-loader?mimetype=application/octet-stream",
+            exclude: isInSrc
           },
-          { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader" }
+          { 
+            test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader",
+            exclude: isInSrc
+          }
         ]
       }
     };
@@ -99,8 +113,6 @@ module.exports = [
           eval(
             "" + fs.readFileSync(path.join(basePath, "webserver-tests/init.js"))
           );
-          module.exports(req, res);
-          module.exports = {};
         });
       }
     };
@@ -109,7 +121,7 @@ module.exports = [
   },
   function(env, argv) {
     const base = {
-      context: path.join(basePath, "sw"),
+      context: path.join(basePath, swSrcPath),
       resolve: {
         extensions: [".js", ".ts", ".tsx"]
       },
@@ -120,7 +132,7 @@ module.exports = [
         rules: [
           {
             test: /\.(ts|tsx)$/,
-            exclude: /node_modules/,
+            exclude: isNotInSwSrc,
             loader: "awesome-typescript-loader",
             options: {
               useBabel: true,
