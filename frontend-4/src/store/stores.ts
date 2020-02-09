@@ -55,10 +55,8 @@ namespace card5 {
   export const store = observable(
     {
       validationMessage: null as string,
-      validated: false,
       updateValidationMessage(error: string) {
         store.validationMessage = error;
-        store.validated = true;
       },
       get validationState(): util.Validationstate{
         if(store.validationMessage === null) return util.Validationstate.NOT_VALIDATED
