@@ -1,0 +1,14 @@
+{
+    "short_name": "App",
+    "name": "App example",
+    "icons": [
+      {
+        "src": "/assets/img/icon.png",
+        "type": "image/png",
+        "sizes": "144x144"
+      }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "scope": "/"
+  }
