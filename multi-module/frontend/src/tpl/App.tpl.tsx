@@ -4,7 +4,6 @@ import { app } from "../controller/AppController";
 import { Navigation } from "./Navigation.tpl";
 
 export const App = observer((props: app.Props) => {
-    console.log("render");
     return (
   <div>
     <Navigation title="header example" />

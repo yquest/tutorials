@@ -5,7 +5,6 @@ import { stores } from "../store/stores";
 import { observer } from "mobx-react";
 import { main } from "../controller/Main.controller";
 import { util } from "../util";
-
 function createList(
   list: string[],
   fnRemove: (value: string) => (e: React.MouseEvent) => void
@@ -14,7 +13,7 @@ function createList(
     list.length > 0 && (
       <ul className="list-group mb-3">
         {list.map((value, idx) => (
-          <li key={`idx-${idx}`} className="list-group-item">
+          <li key="`idx-${idx}`" className="list-group-item">
             <div className="row">
               <div className="col-7">{`idx=${idx} value=(${value}) `}</div>
               <div className="col text-right">
@@ -22,8 +21,6 @@ function createList(
                   onClick={fnRemove(value)}
                   type="button"
                   className="btn btn-primary"
-                  data-toggle="button"
-                  aria-pressed="false"
                 >
                   remove
                 </button>
@@ -35,7 +32,6 @@ function createList(
     )
   );
 }
-
 export const Main = observer(
   (props: main.Props): JSX.Element => (
     <App title="Example title">
@@ -59,11 +55,11 @@ export const Main = observer(
         <Card
           title="Card 3"
           evt={props.addToList}
-          value={stores.main.frontedList.length}
+          value={stores.main.frontendList.length}
           btn="add to list"
         >
           <p>List length</p>
-          {createList(stores.main.frontedList, props.removeFromFrontend)}
+          {createList(stores.main.frontendList, props.removeFromFrontend)}
         </Card>
         <Card
           title="Card 4"
@@ -82,14 +78,21 @@ export const Main = observer(
         >
           <div>
             <input
-              className={"form-control mb-2" + util.validationState2ControllerClass(stores.card5.validationState)}
+              className={
+                "form-control mb-2" +
+                util.validationState2ControllerClass(
+                  stores.card5.validationState
+                )
+              }
               onChange={props.changeInputMessage}
               value={stores.main.message}
             />
-            {stores.card5.validationState === util.Validationstate.INVALID && (
-              <div className="invalid-feedback mb-2">{stores.card5.validationMessage}</div>
-            )}
           </div>
+          {stores.card5.validationState === util.Validationstate.INVALID && (
+            <div className="invalid-feedback mb-2">
+              {stores.card5.validationMessage}
+            </div>
+          )}
         </Card>
       </div>
     </App>

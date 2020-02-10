@@ -1,4 +1,4 @@
-package pt.fabm.main
+package pt.fabm.main.global
 
 import io.vertx.core.buffer.Buffer
 

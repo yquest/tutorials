@@ -17,7 +17,7 @@ namespace main {
     {
       value1: 0,
       value2: 0,
-      frontedList: [] as IObservableArray<string>,
+      frontendList: [] as IObservableArray<string>,
       backendList: window["__state"] as IObservableArray<string>,
       maxList: 0,
       message: "",
@@ -28,14 +28,14 @@ namespace main {
         store.value2 = n;
       },
       removeFromFrontend(value: string) {
-        store.frontedList.remove(value);
+        store.frontendList.remove(value);
       },
       removeFromBackend(value: string) {
         store.backendList.remove(value);
       },
       addToList() {
         store.maxList++;
-        store.frontedList.push(`item id:${store.maxList}`);
+        store.frontendList.push(`item id:${store.maxList}`);
       },
       loadList(values: string[]) {
         store.backendList = values as IObservableArray<string>;
