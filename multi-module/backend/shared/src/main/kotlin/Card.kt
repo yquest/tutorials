@@ -11,7 +11,6 @@ abstract class Card(buffer: Buffer) : Element(buffer) {
     abstract fun children(block: () -> Unit)
     abstract fun a(href: String, className: String,onClick:String, block: () -> Unit)
 
-
     fun render(title: String, value: String, btn: String, children: () -> Unit) {
         div(className = "col-lg-6 mb-3") {
             div(className = "card box-shadow") {

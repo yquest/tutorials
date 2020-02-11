@@ -9,7 +9,6 @@ abstract class App(buffer: Buffer = Buffer.buffer()) : Element(buffer) {
     abstract fun div(classname: String, block: () -> Unit)
     abstract fun h1(block: () -> Unit)
 
-
    fun render(title: String, children: () -> Unit): Buffer {
         div {
             navigation("header example")

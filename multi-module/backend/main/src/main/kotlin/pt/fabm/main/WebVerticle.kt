@@ -41,12 +41,6 @@ class WebVerticle: AbstractVerticle() {
     private fun configInit(config:JsonObject){
         server = vertx.createHttpServer()
         val router = Router.router(vertx)
-        router.route("/").handler {
-            it.response().end(App().render())
-        }
-        router.route("/second").handler {
-            it.response().end(Navigation().render())
-        }
         val port = config.getJsonObject("confs").getJsonObject("rest").getInteger("port")?: throw error("server port required")
         server.requestHandler { router.handle(it) }.listen(port){
             if(it.succeeded())

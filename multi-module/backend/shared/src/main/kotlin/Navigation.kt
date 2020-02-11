@@ -4,7 +4,7 @@ import io.vertx.core.buffer.Buffer
 import pt.fabm.main.global.Element
 import pt.fabm.main.global.Tag
 
-abstract class Navigation(buffer: Buffer = Buffer.buffer()) : Element(buffer) {
+abstract class Navigation(buffer: Buffer) : Element(buffer) {
     abstract fun div(className: String, block: () -> Unit)
     abstract fun h5(className: String, block: () -> Unit)
     abstract fun a(className: String, href: String, block: () -> Unit)
