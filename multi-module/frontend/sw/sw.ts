@@ -7,7 +7,7 @@ const assets = [
   "/f6121be597a72928f54e7ab5b95512a1.woff2",
   "/tests",
   "/favicon.ico",
-  "/nonet.svg"
+  "/assets/img/nonet.svg"
 ];
 
 var sse = null;
