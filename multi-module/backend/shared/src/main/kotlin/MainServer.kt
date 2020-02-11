@@ -3,7 +3,7 @@ package pt.fabm.main
 import io.vertx.core.buffer.Buffer
 import pt.fabm.main.global.Tag
 
-class MainServer(buffer: Buffer, private val list: List<String>) : Main(buffer) {
+class MainServer(buffer: Buffer = Buffer.buffer(), private val list: List<String>) : Main(buffer) {
     var currentIdx: Int = 0
     lateinit var currentValue:String
 
