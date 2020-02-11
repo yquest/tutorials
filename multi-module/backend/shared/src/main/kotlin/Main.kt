@@ -4,7 +4,7 @@ import io.vertx.core.buffer.Buffer
 import pt.fabm.main.global.Element
 import pt.fabm.main.global.Tag
 
-abstract class Main(protected val buffer: Buffer) : Element(buffer) {
+abstract class Main(buffer: Buffer) : Element(buffer) {
     enum class InputIdentifier {
         MESSAGE
     }

@@ -13,15 +13,14 @@ function createList(
     list.length > 0 && (
       <ul className="list-group mb-3">
         {list.map((value, idx) => (
-          <li key="`idx-${idx}`" className="list-group-item">
+          <li key={`idx-${idx}`} className="list-group-item">
             <div className="row">
               <div className="col-7">{`idx=${idx} value=(${value}) `}</div>
               <div className="col text-right">
                 <button
                   onClick={fnRemove(value)}
                   type="button"
-                  className="btn btn-primary"
-                >
+                  className="btn btn-primary">
                   remove
                 </button>
               </div>
@@ -40,24 +39,21 @@ export const Main = observer(
           title="Card 1"
           evt={props.update1OnClickEvt}
           value={stores.main.value1}
-          btn="increment"
-        >
+          btn="increment">
           <p>Increment Card</p>
         </Card>
         <Card
           title="Card 2"
           evt={props.update2OnClickEvt}
           value={stores.main.value2}
-          btn="copy first"
-        >
+          btn="copy first">
           <p>Copy value from Card 1</p>
         </Card>
         <Card
           title="Card 3"
           evt={props.addToList}
           value={stores.main.frontendList.length}
-          btn="add to list"
-        >
+          btn="add to list">
           <p>List length</p>
           {createList(stores.main.frontendList, props.removeFromFrontend)}
         </Card>
@@ -65,8 +61,7 @@ export const Main = observer(
           title="Card 4"
           evt={props.loadList}
           value={stores.main.backendList.length}
-          btn="load from backend"
-        >
+          btn="load from backend">
           <p>List length</p>
           {createList(stores.main.backendList, props.removeFromBackend)}
         </Card>
@@ -74,8 +69,7 @@ export const Main = observer(
           title="Card 5"
           evt={props.fireNotification}
           value={0}
-          btn="fire notification"
-        >
+          btn="fire notification">
           <div>
             <input
               className={

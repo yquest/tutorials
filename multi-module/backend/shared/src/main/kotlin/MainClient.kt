@@ -12,7 +12,7 @@ class MainClient(buffer: Buffer = Buffer.buffer()) : Main(buffer) {
 
     override fun li(className: String, key: String, block: () -> Unit) {
         Tag("li", buffer)
-                .attribute("key", key)
+                .clientAttribute("key", key)
                 .attribute("className",className)
                 .createBody(block)
     }

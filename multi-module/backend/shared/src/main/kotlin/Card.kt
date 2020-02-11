@@ -3,15 +3,13 @@ package pt.fabm.main
 import io.vertx.core.buffer.Buffer
 import pt.fabm.main.global.Element
 
-abstract class Card(protected val buffer: Buffer) : Element(buffer) {
+abstract class Card(buffer: Buffer) : Element(buffer) {
 
-    abstract fun h4(block: () -> Unit) //= Tag("h1", buffer).createBody(block)
-    abstract fun h5(className: String, block: () -> Unit) //= Tag("h1", buffer).createBody(block)
-    abstract fun div(className: String, block: () -> Unit)  /* = Tag("div", buffer)
-                .attribute("class", className)
-                .createBody(block)*/
+    abstract fun h4(block: () -> Unit)
+    abstract fun h5(className: String, block: () -> Unit)
+    abstract fun div(className: String, block: () -> Unit)
     abstract fun children(block: () -> Unit)
-    abstract fun a(href: String, className: String, block: () -> Unit)
+    abstract fun a(href: String, className: String,onClick:String, block: () -> Unit)
 
 
     fun render(title: String, value: String, btn: String, children: () -> Unit) {
@@ -25,7 +23,7 @@ abstract class Card(protected val buffer: Buffer) : Element(buffer) {
                         +value
                     }
                     children()
-                    a(href = "#", className = "btn btn-primary") {
+                    a(href = "#", className = "btn btn-primary", onClick = "props.evt") {
                         +btn
                     }
                 }

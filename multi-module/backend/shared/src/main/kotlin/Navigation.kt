@@ -4,10 +4,11 @@ import io.vertx.core.buffer.Buffer
 import pt.fabm.main.global.Element
 import pt.fabm.main.global.Tag
 
-abstract class Navigation(private val buffer: Buffer = Buffer.buffer()) : Element(buffer) {
+abstract class Navigation(buffer: Buffer = Buffer.buffer()) : Element(buffer) {
     abstract fun div(className: String, block: () -> Unit)
     abstract fun h5(className: String, block: () -> Unit)
     abstract fun a(className: String, href: String, block: () -> Unit)
+    abstract fun nav(className: String, block: () -> Unit)
     abstract fun i(className: String)
     abstract fun offLineMode()
     abstract fun onLineMode(block: () -> Unit)
@@ -19,6 +20,11 @@ abstract class Navigation(private val buffer: Buffer = Buffer.buffer()) : Elemen
                 +title
             }
             offLineMode()
+            nav(className = "my-2 my-md-0 mr-md-3"){
+                a(href = "#",className = "p-2 text-dark"){
+                    +"link example"
+                }
+            }
             onLineMode {
                 a(className = "btn btn-outline-primary", href = "#") {
                     i(className = "fas fa-sign-in-alt")
