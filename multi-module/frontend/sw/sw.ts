@@ -5,7 +5,6 @@ const assets = [
   "/",
   "/bundle.js",
   "/f6121be597a72928f54e7ab5b95512a1.woff2",
-  "/tests",
   "/favicon.ico",
   "/assets/img/nonet.svg"
 ];

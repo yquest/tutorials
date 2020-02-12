@@ -4,6 +4,7 @@ const fs = require("fs");
 const basePath = __dirname;
 const srcPath = "src";
 const swSrcPath = "sw";
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isInSrc = (file)=>file.startsWith(path.resolve(basePath,srcPath));
 const isNotInSrc = (file)=>!file.startsWith(path.resolve(basePath,srcPath));
@@ -32,7 +33,7 @@ module.exports = [
           },
           {
             test: /\.(sa|sc|c)ss$/,
-            use: ["style-loader", "css-loader", "sass-loader"]
+            use: [ MiniCssExtractPlugin.loader, "css-loader",  "sass-loader"]
           },
           {
             test: /\.(png|jpg|gif|svg)$/,
@@ -100,7 +101,11 @@ module.exports = [
       hash: true
     });
 
-    base.plugins = [htmlWebpackPlugin];
+    base.plugins = [htmlWebpackPlugin,new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: '[name].css'
+    })];
 
     base.devServer = {
       contentBase: base.output.path,

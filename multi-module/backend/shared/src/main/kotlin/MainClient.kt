@@ -51,7 +51,7 @@ class MainClient(buffer: Buffer = Buffer.buffer()) : Main(buffer) {
 
 
     override fun expressionLabel(): String {
-        return "{`idx=\${idx} value=(\${value}) `}"
+        return "{`idx=\${idx} value=(\${value})`}"
     }
 
     override fun eachLine(block: () -> Unit) {

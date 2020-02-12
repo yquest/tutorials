@@ -4,7 +4,8 @@
   "description": "Example app",
   "main": "index.js",
   "scripts": {
-    "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --mode development"
+    "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --mode development",
+    "start:dev": "node node_modules/webpack-cli/bin/cli.js --mode development"
   },
   "license": "ISC",
   "devDependencies": {
@@ -19,6 +20,7 @@
     "css-loader": "^1.0.0",
     "file-loader": "^2.0.0",
     "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.9.0",
     "mobx": "4.9.2",
     "mobx-react": "5.4.3",
     "mobx-react-devtools": "6.0.3",
@@ -27,7 +29,7 @@
     "style-loader": "^0.23.1",
     "typescript": "^3.6.2",
     "url-loader": "^1.1.1",
-    "webpack": "^4.39.3",
+    "webpack": "^4.41.6",
     "webpack-cli": "^3.3.7",
     "webpack-dev-server": "^3.10.1"
   },

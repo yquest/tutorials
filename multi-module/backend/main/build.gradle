@@ -39,7 +39,7 @@ task runApp(type: JavaExec) {
     debug = true
 }
 
-task genTpx(type: JavaExec){
+task genTsx(type: JavaExec){
     main =  'pt.fabm.main.GenTplsKt'
     classpath = sourceSets.main.runtimeClasspath
     workingDir = '../..' as File

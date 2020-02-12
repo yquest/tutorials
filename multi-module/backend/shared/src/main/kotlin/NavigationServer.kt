@@ -32,7 +32,7 @@ class NavigationServer(buffer: Buffer) : Navigation(buffer) {
     override fun i(className: String) {
         Tag("i", buffer)
                 .attribute("class", className)
-                .create()
+                .createBody {  }
     }
 
     override fun offLineMode() {
