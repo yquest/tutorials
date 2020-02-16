@@ -25,7 +25,7 @@ distributions {
         }
     }
 }
-def mainVerticleName = 'pt.fabm.main.WebVerticle'
+def mainVerticleName = 'pt.fabm.multimodule.main.WebVerticle'
 def serverPort = 8080
 def conf = "${project.rootProject.projectDir}/conf"
 

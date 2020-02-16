@@ -1,4 +1,4 @@
-package pt.fabm.main
+package pt.fabm.multimodule.main
 
 
 import org.junit.jupiter.api.Test
