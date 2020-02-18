@@ -50,7 +50,7 @@ class MainServer(buffer: Buffer = Buffer.buffer(), private val list: List<String
     }
 
     override fun expressionLabel(): String {
-        return "idx=${currentIdx} value=(my element ${currentIdx+1})"
+        return "idx=${currentIdx} value=(${currentValue})"
     }
 
     override fun eachLine(block: () -> Unit) {

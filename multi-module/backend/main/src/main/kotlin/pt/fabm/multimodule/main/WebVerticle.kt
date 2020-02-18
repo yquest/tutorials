@@ -55,12 +55,21 @@ class WebVerticle : AbstractVerticle() {
 
     private fun main(rc: RoutingContext) {
         val page = Page()
-        val buffer = page.render(
-                MainServer(list = listOf("my element 1", "my element 2"))
-                        .render(),
-                JsonArray().add("my element 1").add("my element 2")
-        )
-        rc.response().end(buffer)
+
+        fun bufferData(event: (List<String>) -> Unit) = vertx.eventBus().send(ListDao.DAO_ITEMS_LIST,
+                null, DeliveryOptions().setCodecName(List::class.java.simpleName),
+                Handler<AsyncResult<Message<List<String>>>> { reply ->
+                    LOGGER.info("list ${reply.result().body()}")
+                    event(reply.result().body())
+                })
+
+
+        bufferData { data ->
+            val mainBuffer = MainServer(list = data).render()
+            val buffer = page.render(mainBuffer, JsonObject().put("list",JsonArray(data)))
+            rc.response().end(buffer)
+        }
+
     }
 
     private fun send(rc: RoutingContext) {
@@ -89,11 +98,11 @@ class WebVerticle : AbstractVerticle() {
 
     private fun list(rc: RoutingContext) {
         val response = rc.response()
-        val message: Void? = null
         vertx.eventBus().send(ListDao.DAO_ITEMS_LIST,
-                message, DeliveryOptions().setCodecName(List::class.java.simpleName),
+                null, DeliveryOptions().setCodecName(List::class.java.simpleName),
                 Handler<AsyncResult<Message<List<String>>>> { reply ->
                     LOGGER.info("list ${reply.result().body()}")
+                    response.end(JsonArray(reply.result().body()).toBuffer())
                 })
     }
 

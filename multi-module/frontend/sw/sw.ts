@@ -1,10 +1,9 @@
 declare const clients: any;
 const sw = self as ({ clients: any[] } & ServiceWorkerContainer) | any;
-const cacheName = "v-1";
+const cacheName = "v1";
 const assets = [
   "/",
   "/bundle.js",
-  "/f6121be597a72928f54e7ab5b95512a1.woff2",
   "/favicon.ico",
   "/assets/img/nonet.svg"
 ];
@@ -78,7 +77,9 @@ sw.addEventListener("fetch", function (event: any) {
 let es: EventSource = null;
 
 sw.addEventListener("message", function handler(event) {
-
+  if(es !== null){
+    console.log(es.readyState);
+  }
   function listenSSE(evt) {
     console.log(es.readyState);
     event.ports[0].postMessage({

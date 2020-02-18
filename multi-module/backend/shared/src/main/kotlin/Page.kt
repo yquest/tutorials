@@ -1,9 +1,11 @@
 package pt.fabm.main
 
 import io.vertx.core.buffer.Buffer
+import io.vertx.core.json.JsonObject
 
 class Page {
-    fun render(buffer: Buffer,json: Any): Buffer {
+    fun render(buffer: Buffer,json: JsonObject): Buffer {
+
         val wrapper = Buffer.buffer()
         wrapper.appendString("""
             <!DOCTYPE html>

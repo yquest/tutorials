@@ -18,7 +18,7 @@ namespace main {
       value1: 0,
       value2: 0,
       frontendList: [] as IObservableArray<string>,
-      backendList: window["__state"] as IObservableArray<string>,
+      backendList: window["__state"]["list"] as IObservableArray<string>,
       maxList: 0,
       message: "",
       update1() {
