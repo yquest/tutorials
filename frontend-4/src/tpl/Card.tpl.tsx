@@ -1,8 +1,8 @@
 import * as React from "react";
-import { observer } from "mobx-react";
 import { card } from "../controller/Card.controller";
 
-export const Card = observer((props: card.Props) => (
+export const Card = (props: card.Props) => {
+  return (
     <div className="col-lg-6 mb-3">
       <div className="card box-shadow">
         <div className="card-header">
@@ -17,4 +17,5 @@ export const Card = observer((props: card.Props) => (
         </div>
       </div>
     </div>
-  ));
+  );
+};
