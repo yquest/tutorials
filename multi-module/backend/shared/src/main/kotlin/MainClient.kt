@@ -69,16 +69,16 @@ class MainClient(buffer: Buffer = Buffer.buffer()) : Main(buffer) {
     }
 
     override fun handleFrontEndList() {
-        buffer.appendString("{createList(stores.main.frontendList, props.removeFromFrontend)}")
+        buffer.appendString("{createList(controller.frontEndList, controller.events.removeFromFrontend)}")
     }
 
     override fun handleBackEndList() {
-        buffer.appendString("{createList(stores.main.backendList, props.removeFromBackend)}")
+        buffer.appendString("{createList(controller.backEndList, controller.events.removeFromBackend)}")
     }
 
     override fun input(identifier: InputIdentifier, onChange: String, value: String) {
         val className: String = when (identifier) {
-            InputIdentifier.MESSAGE -> "\"form-control mb-2\" + util.validationState2ControllerClass(stores.card5.validationState)"
+            InputIdentifier.MESSAGE -> "\"form-control mb-2\" + util.validationState2ControllerClass(controller.validationState)"
         }
         Tag("input", buffer)
                 .clientAttribute("className", className)
@@ -88,7 +88,7 @@ class MainClient(buffer: Buffer = Buffer.buffer()) : Main(buffer) {
     }
 
     override fun errorMessage() {
-        buffer.appendString("{stores.card5.validationState === util.Validationstate.INVALID && (<div className=\"invalid-feedback mb-2\">{stores.card5.validationMessage}</div>)}")
+        buffer.appendString("{controller.validationState === util.Validationstate.INVALID && (<div className=\"invalid-feedback mb-2\">{controller.validationMessage}</div>)}")
     }
 
     fun renderCreateList(): Buffer {
@@ -102,20 +102,19 @@ class MainClient(buffer: Buffer = Buffer.buffer()) : Main(buffer) {
         buffer.appendString( """
         import * as React from "react";
         import { App } from "./App.tpl";
-        import { Card } from "./Card.tpl";
-        import { stores } from "../store/stores";
-        import { observer } from "mobx-react";
-        import { main } from "../controller/Main.controller";
+        import { Card } from "./Card.tpl"; 
+        import { useController } from "../controller/Main.controller";
         import { util } from "../util";""".trimMargin())
 
         renderCreateList()
         buffer.appendString(
             """
-            export const Main = observer(
-            (props: main.Props): JSX.Element => (""".trimMargin()
+            export const Main = (): JSX.Element => {
+            const controller = useController(); 
+            return (""".trimMargin()
         )
         super.render()
-        buffer.appendString("));")
+        buffer.appendString(");}")
         return buffer
     }
 

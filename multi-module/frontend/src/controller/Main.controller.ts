@@ -1,80 +1,100 @@
-import { stores } from "../store/stores";
 import Axios from "axios";
-import { Main } from "../tpl/Main.tpl";
 import * as React from "react";
+import { util } from "../util";
 
-export namespace main {
-  function update1OnClickEvt(e: React.MouseEvent) {
-    e.preventDefault();
-    stores.main.update1();
-  }
+export interface Controller {
+  events: {
+    clickUpdate1(e: React.MouseEvent): void;
+    clickUpdate2(e: React.MouseEvent): void;
+    clickUpdateFrontendList(e: React.MouseEvent): void;
+    clickUpdateBackendList(e: React.MouseEvent): void;
+    clickUpdateMessage(e: React.MouseEvent): void;
+    onChangeInput(e: React.ChangeEvent<HTMLInputElement>): void;
+    removeFromFrontend: (value: string) => (e: React.MouseEvent) => void;
+    removeFromBackend: (value: string) => (e: React.MouseEvent) => void;
+  };
+  readonly value1: number;
+  readonly value2: number,
+  readonly frontEndList: string[];
+  readonly backEndList: string[];
+  readonly message: string;
+  readonly validationState: util.Validationstate;
+  readonly validationMessage: string;
+}
 
-  function update2OnClickEvt(e: React.MouseEvent) {
-    e.preventDefault();
-    stores.main.update2(stores.main.value1);
-  }
+declare const __state: [];
 
-  function addToList(e: React.MouseEvent) {
-    e.preventDefault();
-    stores.main.addToList();
-  }
+export function useController(): Controller {
+  const [value1, setValue1] = React.useState<number>(0);
+  const [value2, setValue2] = React.useState<number>(0);
+  const [frontEndList, setFrontEndList] = React.useState<string[]>([]);
+  const [backEndList, setBackendList] = React.useState<string[]>(__state);
+  const [message, setMessage] = React.useState<string>("");
+  const [validated, setValidated] = React.useState(false);
+  const [maxList, setMaxList] = React.useState<number>(frontEndList.length);
 
-  function loadList(e: React.MouseEvent) {
-    e.preventDefault();
-    Axios.get("/api/data").then(res => {
-      stores.main.loadList(res.data);
-    });
+  function onChangeInput(e: React.ChangeEvent<HTMLInputElement>) {
+    setMessage(e.target.value);
   }
 
   function removeFromFrontend(value: string): (e: React.MouseEvent) => void {
     return e => {
-      stores.main.removeFromFrontend(value);
+      setFrontEndList(frontEndList.filter(c => c !== value))
       e.preventDefault();
     };
   }
   function removeFromBackend(value: string): (e: React.MouseEvent) => void {
     return e => {
-      stores.main.removeFromBackend(value);
+      setBackendList(backEndList.filter(c => c !== value))
       e.preventDefault();
     };
   }
 
-  function changeInputMessage(e: React.ChangeEvent<HTMLInputElement>) {
-    stores.main.updateMessage(e.target.value);
-  }
-
-  function fireNotification(e: React.MouseEvent) {
+  const clickUpdate1 = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (stores.main.message.length > 0) {
-      stores.card5.updateValidationMessage("");
-      Axios.post("/api/send", { message: stores.main.message });
-    } else {
-      stores.card5.updateValidationMessage("expected message");
+    setValue1(value1 + 1);
+  }
+  const clickUpdate2 = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setValue2(value1);
+  }
+
+  const clickUpdateFrontendList = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setMaxList(maxList + 1);
+    setFrontEndList([...frontEndList, `item id:${maxList}`])
+  }
+  const clickUpdateBackendList = (e: React.MouseEvent) => {
+    e.preventDefault()
+    Axios.get("/api/data").then(res => {
+      setBackendList(res.data);
+    });
+  }
+  const clickUpdateMessage = (e: React.MouseEvent) => {
+    setValidated(true);
+    if (createValidationState() === util.Validationstate.VALID){
+      Axios.post("/api/send", { message: message });
     }
+    e.preventDefault()
   }
 
-  export interface Props {
-    update1OnClickEvt: (e: React.MouseEvent) => void;
-    update2OnClickEvt: (e: React.MouseEvent) => void;
-    addToList: (e: React.MouseEvent) => void;
-    removeFromFrontend: (value: string) => (e: React.MouseEvent) => void;
-    removeFromBackend: (value: string) => (e: React.MouseEvent) => void;
-    loadList: (e: React.MouseEvent) => void;
-    changeInputMessage: (e: React.ChangeEvent) => void;
-    fireNotification: (e: React.MouseEvent) => void;
+  function createValidationState(): util.Validationstate {
+    if (!validated) return util.Validationstate.NOT_VALIDATED;
+    else if (message.length > 0) return util.Validationstate.VALID;
+    else return util.Validationstate.INVALID;
   }
 
-  export function createHtml(): React.ReactElement {
-    const props: Props = {
-      addToList,
-      loadList,
-      removeFromBackend,
-      removeFromFrontend,
-      update1OnClickEvt,
-      update2OnClickEvt,
-      changeInputMessage,
-      fireNotification
-    };
-    return React.createElement(Main, props);
-  }
+  return {
+    get validationState() { return createValidationState() },
+    value1, value2, frontEndList, backEndList, message, events: {
+      clickUpdate1, clickUpdate2, clickUpdateFrontendList, clickUpdateBackendList, clickUpdateMessage, removeFromBackend, removeFromFrontend, onChangeInput
+    },
+    get validationMessage(): string {
+      switch (createValidationState()) {
+        case util.Validationstate.INVALID: return "message is a required field";
+        case util.Validationstate.VALID: return "";
+        case util.Validationstate.NOT_VALIDATED: return "";
+      }
+    }
+  };
 }

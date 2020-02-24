@@ -30,17 +30,16 @@ class AppClient(buffer: Buffer = Buffer.buffer()):App(buffer){
     fun render():Buffer{
         buffer.appendString("""
         import * as React from "react";
-        import { observer } from "mobx-react";
         import { app } from "../controller/AppController";
         import { Navigation } from "./Navigation.tpl";
-        export const App = observer((props: app.Props) => (
+        export const App = (props: app.Props) =>{return (
         """.trimIndent())
 
         render("{props.title}"){
             + "{props.children}"
         }
 
-        buffer.appendString("));")
+        buffer.appendString(");}")
         return buffer
     }
 }

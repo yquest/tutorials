@@ -35,9 +35,8 @@ class CardClient(buffer: Buffer = Buffer.buffer()) : Card(buffer) {
     fun render():Buffer {
         buffer.appendString("""
         import * as React from "react";
-        import { observer } from "mobx-react";
         import { card } from "../controller/Card.controller";
-        export const Card = observer((props: card.Props) => (
+        export const Card = (props: card.Props) => {return (
         """.trimIndent())
         render(
                 title = "{props.title}",
@@ -46,7 +45,7 @@ class CardClient(buffer: Buffer = Buffer.buffer()) : Card(buffer) {
         ) {
             +"{props.children}"
         }
-        buffer.appendString("));")
+        buffer.appendString(");}")
         return buffer
     }
 

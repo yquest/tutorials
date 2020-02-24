@@ -1,6 +1,7 @@
 import "./content/manifest.json";
 import * as ReactDOM from "react-dom";
-import { main } from "./controller/Main.controller";
+import { Main } from "./tpl/Main.tpl";
+import * as React from "react";
 import "./content/icon.png"
 
 function twoWayCommunication(options: {
@@ -81,4 +82,4 @@ if ("serviceWorker" in navigator) {
       )
   });
 }
-ReactDOM.hydrate(main.createHtml(), document.getElementById("root"));
+ReactDOM.render(React.createElement(Main), document.getElementById("root"));

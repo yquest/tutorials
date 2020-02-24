@@ -49,31 +49,31 @@ abstract class Main(buffer: Buffer) : Element(buffer) {
     open fun render():Buffer {
         app(title = "Example title") {
             div(className = "row") {
-                card(title = "Card 1", evt = "props.update1OnClickEvt", value = "stores.main.value1", btn = "increment") {
+                card(title = "Card 1", evt = "controller.events.clickUpdate1", value = "controller.value1", btn = "increment") {
                     p {
                         +"Increment Card"
                     }
                 }
-                card(title = "Card 2", evt = "props.update2OnClickEvt", value = "stores.main.value2", btn = "copy first") {
+                card(title = "Card 2", evt = "controller.events.clickUpdate2", value = "controller.value2", btn = "copy first") {
                     p {
                         +"Copy value from Card 1"
                     }
                 }
-                card(title = "Card 3", evt = "props.addToList", value = "stores.main.frontendList.length", btn = "add to list") {
+                card(title = "Card 3", evt = "controller.events.clickUpdateFrontendList", value = "controller.frontEndList.length", btn = "add to list") {
                     p {
                         +"List length"
                     }
                     handleFrontEndList()
                 }
-                card(title = "Card 4", evt = "props.loadList", value = "stores.main.backendList.length", btn = "load from backend") {
+                card(title = "Card 4", evt = "controller.events.clickUpdateBackendList", value = "controller.backEndList.length", btn = "load from backend") {
                     p {
                         +"List length"
                     }
                     handleBackEndList()
                 }
-                card(title = "Card 5", evt = "props.fireNotification", value = "0", btn = "fire notification") {
+                card(title = "Card 5", evt = "controller.events.clickUpdateMessage", value = "0", btn = "fire notification") {
                     div {
-                        input(InputIdentifier.MESSAGE, onChange = "props.changeInputMessage", value = "stores.main.message")
+                        input(InputIdentifier.MESSAGE, onChange = "controller.events.onChangeInput", value = "controller.message")
                     }
                     errorMessage()
                 }
