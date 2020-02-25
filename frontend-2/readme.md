@@ -1,6 +1,6 @@
 ## Frontend tutorial 2
 
-This tutorial have as prerequisite the [frontend 1 tutorial](../frontend-1/readme.md), and the main goal is to dive into the mbox world to achieve dynamic shared state to several components.  
+This tutorial have as prerequisite the [frontend 1 tutorial](../frontend-1/readme.md), and the main goal is to use react-hooks to create the main component state and used to render the correspondent children.  
 
 The tutorial will be divided in 3 cards each one with a button with a specific behavior that will be explained in depth.
 
@@ -15,102 +15,16 @@ The tutorial will be divided in 3 cards each one with a button with a specific b
       
 ***
 
-#### package.json
-added 3 dependencies
-```
-"mobx": "4.9.2",
-"mobx-react": "5.4.3",
-"mobx-react-devtools": "6.0.3"
-```
+With functional components it's possible to add the state with react-hooks and with that add behavior to the components, for that reason we create a controller with the method useController, to repect the convection of react-hooks.
 
-The strategy in the *mbox* is to share a store state between components, to use that we need to wrap the objects as observables and components as observers, simple as that.
-
-I prefer a strict way of deal with actions (methods that will update values in store), that means, each action must be registered. 
-In the example we use 3 number variables and 1 list of strings
-
-declared strict way:
-```javascript
-configure({ enforceActions: "observed" });
-```
-
-####store creation
+####controller creation
 Fisrst off all we need to create the actions.
 ```javascript
-const storeActions = {
-  update1: action,
-  update2: action,
-  remove: action,
-  addToList: action
-};
-```
-After, we create the store itself.
-```javascript
-const store = observable(
-  {
-    value1: 0,
-    value2: 0,
-    list: [] as IObservableArray<string>,
-    maxList: 0,
-    update1() {
-      store.value1 = store.value1 + 1;
-    },
-    update2(n: number) {
-      store.value2 = n;
-    },
-    remove(idx: number) {
-      store.list.remove(store.list[idx]);
-    },
-    addToList() {
-      store.maxList++;
-      store.list.push(`item id:${store.maxList}`);
-    }
-  },
-  storeActions
-);
-```
-You can notice that we have a type IObservableArray, this is the type of all arrays used in stores, it's the method **observable** who transforms the original array into this.
-This type it's enhance the original array and give it extra methods as **remove**.
-
-In my opinion, the easiest way to create a jsx component is something like the example above:
-```javascript
-const Card = (props: CardProps) => (
-  <div className="col-lg-6 mb-3">
-    <div className="card box-shadow">
-      <div className="card-header">
-        <h4>{props.title}</h4>
-      </div>
-      <div className="card-body">
-        <h5 className="card-title">{props.value}</h5>
-        {props.children}
-        <a href="#" className="btn btn-primary" onClick={props.evt}>
-          {props.btn}
-        </a>
-      </div>
-    </div>
-  </div>
-);
+function useController(): Controller {
+  ...
+}
 ```
 
-But if you want to re-render de component after store changes one element, that the component has access, you need tu use the **observer** function, like the example above:
-
-```javascript
-const Card = observer((props: CardProps)) => (
-  <div className="col-lg-6 mb-3">
-    <div className="card box-shadow">
-      <div className="card-header">
-        <h4>{props.title}</h4>
-      </div>
-      <div className="card-body">
-        <h5 className="card-title">{props.value}</h5>
-        {props.children}
-        <a href="#" className="btn btn-primary" onClick={props.evt}>
-          {props.btn}
-        </a>
-      </div>
-    </div>
-  </div>
-));
-```
 
 You can notice that in props parameters passed to jsx components in the example we use interfaces, with that we ensure the types used, there is a special parameter **children**, this parameter allow us to pass a body within the element body like the example above:
 

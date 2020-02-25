@@ -1,7 +1,5 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { observer } from "mobx-react";
-import { observable, action, configure, IObservableArray } from "mobx";
 import Axios from "axios";
 
 interface CardProps {
@@ -17,82 +15,78 @@ interface BodyProps {
   children: React.ReactElement;
 }
 
-configure({ enforceActions: "observed" });
-
-const storeActions = {
-  update1: action,
-  update2: action,
-  addToList: action,
-  loadList: action,
-  removeFromFrontend: action,
-  removeFromBackend: action
-};
-const store = observable(
-  {
-    value1: 0,
-    value2: 0,
-    frontedList: [] as IObservableArray<string>,
-    backendList:window["__state"] as IObservableArray<string>,
-    maxList: 0,
-    update1() {
-      store.value1 = store.value1 + 1;
-    },
-    update2(n: number) {
-      store.value2 = n;
-    },
-    removeFromFrontend(value: string) {
-      store.frontedList.remove(value);
-    },
-    removeFromBackend(value: string) {
-      store.backendList.remove(value);
-    },
-    addToList() {
-      store.maxList++;
-      store.frontedList.push(`item id:${store.maxList}`);
-    },
-    loadList(values: string[]) {
-      store.backendList = values as IObservableArray<string>;
-    }
-  },
-  storeActions
-);
-
-function update1OnClickEvt(e: React.MouseEvent) {
-  e.preventDefault();
-  store.update1();
-}
-
-function update2OnClickEvt(e: React.MouseEvent) {
-  e.preventDefault();
-  store.update2(store.value1);
-}
-
-function addToList(e: React.MouseEvent) {
-  e.preventDefault();
-  store.addToList();
-}
-
-function loadList(e: React.MouseEvent) {
-  e.preventDefault();
-  Axios.get("/api/data").then(res => {
-    store.loadList(res.data);
-  });
-}
-
-function removeFromFrontend(value: string): (e: React.MouseEvent) => void {
-  return e => {
-    store.removeFromFrontend(value);
-    e.preventDefault();
+interface Controller {
+  events: {
+    update1OnClickEvt(e: React.MouseEvent): void;
+    update2OnClickEvt(e: React.MouseEvent): void;
+    addToList(e: React.MouseEvent): void;
+    removeFromFontendList(value: string): (e: React.MouseEvent) => void;
+    removeFromBackendList(value: string): (e: React.MouseEvent) => void;
+    loadList(e: React.MouseEvent): void;
   };
+  readonly value1: number;
+  readonly value2: number;
+  readonly frontendList: string[];
+  readonly backendList: string[];
 }
-function removeFromBackend(value: string): (e: React.MouseEvent) => void {
-  return e => {
-    store.removeFromBackend(value);
+
+declare const __state: string[];
+
+function useController(): Controller {
+  const [value1, setValue1] = React.useState(0);
+  const [value2, setValue2] = React.useState(0);
+  const [maxList, setMaxList] = React.useState(0);
+  const [frontendList, setFrontendlist] = React.useState([] as string[]);
+  const [backendList, setBackendlist] = React.useState(__state);
+
+  function update1OnClickEvt(e: React.MouseEvent) {
     e.preventDefault();
+    setValue1(value1 + 1);
+  }
+  function update2OnClickEvt(e: React.MouseEvent) {
+    e.preventDefault();
+    setValue2(value1);
+  }
+  function addToList(e: React.MouseEvent) {
+    e.preventDefault();
+    setMaxList(maxList + 1);
+    setFrontendlist([...frontendList, `item id:${maxList}`]);
+  }
+  function removeFromFontendList(value: string): (e: React.MouseEvent) => void {
+    return e => {
+      setFrontendlist(frontendList.filter(c => c !== value));
+      e.preventDefault();
+    };
+  }
+  function removeFromBackendList(value: string): (e: React.MouseEvent) => void {
+    return e => {
+      setBackendlist(backendList.filter(c => c !== value));
+      e.preventDefault();
+    };
+  }
+  function loadList(e: React.MouseEvent) {
+    e.preventDefault();
+    Axios.get("/api/data").then(res => {
+      setBackendlist(res.data);
+    });
+  }
+  return {
+    events: {
+      addToList,
+      loadList,
+      removeFromFontendList,
+      removeFromBackendList,
+      update1OnClickEvt,
+      update2OnClickEvt
+    },
+    frontendList,
+    backendList,
+    value1,
+    value2
   };
 }
 
-const Card = observer((props: CardProps) => (
+const Card = (props: CardProps) => (
   <div className="col-lg-6 mb-3">
     <div className="card box-shadow">
       <div className="card-header">
@@ -107,7 +101,7 @@ const Card = observer((props: CardProps) => (
       </div>
     </div>
   </div>
-));
+);
 
 const header = (title: string) => (
   <div className="d-flex align-items-center p-3 mb-3 border-bottom box-shadow">
@@ -142,8 +136,7 @@ function createList(
                   type="button"
                   className="btn btn-primary"
                   data-toggle="button"
-                  aria-pressed="false"
-                >
+                  aria-pressed="false">
                   remove
                 </button>
               </div>
@@ -155,46 +148,51 @@ function createList(
   );
 }
 
-const Bottom = observer(() => (
-  <div className="row">
-    <Card
-      title="Card 1"
-      evt={update1OnClickEvt}
-      value={store.value1}
-      btn="increment"
-    >
-      <p>Increment Card</p>
-    </Card>
-    <Card
-      title="Card 2"
-      evt={update2OnClickEvt}
-      value={store.value2}
-      btn="copy first"
-    >
-      <p>Copy value from Card 1</p>
-    </Card>
-    <Card
-      title="Card 3"
-      evt={addToList}
-      value={store.frontedList.length}
-      btn="add to list"
-    >
-      <p>List length</p>
-      {createList(store.frontedList, removeFromFrontend)}
-    </Card>
-    <Card
-      title="Card 4"
-      evt={loadList}
-      value={store.backendList.length}
-      btn="load from backend"
-    >
-      <p>List length</p>
-      {createList(store.backendList, removeFromBackend)}
-    </Card>
-  </div>
-));
+const Bottom = () => {
+  const controller = useController();
+  return (
+    <div className="row">
+      <Card
+        title="Card 1"
+        evt={controller.events.update1OnClickEvt}
+        value={controller.value1}
+        btn="increment">
+        <p>Increment Card</p>
+      </Card>
+      <Card
+        title="Card 2"
+        evt={controller.events.update2OnClickEvt}
+        value={controller.value2}
+        btn="copy first">
+        <p>Copy value from Card 1</p>
+      </Card>
+      <Card
+        title="Card 3"
+        evt={controller.events.addToList}
+        value={controller.frontendList.length}
+        btn="add to list">
+        <p>List length</p>
+        {createList(
+          controller.frontendList,
+          controller.events.removeFromFontendList
+        )}
+      </Card>
+      <Card
+        title="Card 4"
+        evt={controller.events.loadList}
+        value={controller.backendList.length}
+        btn="load from backend">
+        <p>List length</p>
+        {createList(
+          controller.backendList,
+          controller.events.removeFromBackendList
+        )}
+      </Card>
+    </div>
+  );
+};
 
-const Body = observer((props: BodyProps) => (
+const Body = (props: BodyProps) => (
   <div>
     {props.headerBlock}
     <div className="container">
@@ -204,13 +202,10 @@ const Body = observer((props: BodyProps) => (
       {props.children}
     </div>
   </div>
-));
+);
 
 const html = (
-  <Body
-    title="Example title"
-    headerBlock={header("header example")}
-  >
+  <Body title="Example title" headerBlock={header("header example")}>
     <Bottom />
   </Body>
 );
