@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="30"
+   width="30"
+   data-name="Layer 1"
+   viewBox="0 0 3.1999998 3.2"
+   x="0px"
+   y="0px"
+   version="1.1"
+   id="svg885"
+   sodipodi:docname="nonet.svg"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
+   style="fill:#000000">
+  <metadata
+     id="metadata891">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>gadget wifi wireles no connection ui</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs889" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1288"
+     inkscape:window-height="648"
+     id="namedview887"
+     showgrid="true"
+     inkscape:zoom="6.0528341"
+     inkscape:cx="38.165449"
+     inkscape:cy="14.760958"
+     inkscape:window-x="30"
+     inkscape:window-y="11"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg885">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4543" />
+  </sodipodi:namedview>
+  <title
+     id="title873">gadget wifi wireles no connection ui</title>
+  <path
+     d="M 0.81333328,3.0666666 H 0.21333325 a 0.1,0.1 0 0 1 -0.1,-0.1 v -0.8 a 0.1,0.1 0 0 1 0.1,-0.1 h 0.60000003 a 0.1,0.1 0 0 1 0.1,0.1 v 0.8 a 0.1,0.1 0 0 1 -0.1,0.1 z m -0.50000003,-0.2 h 0.4 v -0.6 h -0.4 z"
+     id="path875"
+     inkscape:connector-curvature="0"
+     style="stroke-width:0.1" />
+  <path
+     d="m 1.9133332,3.0666666 h -0.6 a 0.1,0.1 0 0 1 -0.1,-0.1 V 0.96666663 a 0.1,0.1 0 0 1 0.1,-0.1 h 0.6 a 0.1,0.1 0 0 1 0.1,0.1 V 2.9666666 a 0.1,0.1 0 0 1 -0.1,0.1 z m -0.5,-0.2 h 0.4 v -1.8 h -0.4 z"
+     id="path877"
+     inkscape:connector-curvature="0"
+     style="stroke-width:0.1" />
+  <path
+     d="m 3.0133332,3.0666666 h -0.6 a 0.1,0.1 0 0 1 -0.1,-0.1 V 0.16666663 a 0.1,0.1 0 0 1 0.1,-0.1 h 0.6 a 0.1,0.1 0 0 1 0.1,0.1 V 2.9666666 a 0.1,0.1 0 0 1 -0.1,0.1 z m -0.5,-0.2 h 0.4 V 0.26666663 h -0.4 z"
+     id="path879"
+     inkscape:connector-curvature="0"
+     style="stroke-width:0.1" />
+  <path
+     d="m 0.91933328,0.97266663 a 0.1,0.1 0 0 1 -0.071,-0.029 l -0.70600003,-0.706 a 0.10040916,0.10040916 0 0 1 0.142,-0.142 l 0.70600003,0.707 a 0.1,0.1 0 0 1 -0.071,0.171 z"
+     id="path881"
+     inkscape:connector-curvature="0"
+     style="stroke-width:0.1" />
+  <path
+     d="m 0.21333325,0.97266663 a 0.1,0.1 0 0 1 -0.071,-0.171 l 0.70700003,-0.706 a 0.10005623,0.10005623 0 0 1 0.141,0.142 l -0.70600003,0.706 a 0.1,0.1 0 0 1 -0.071,0.029 z"
+     id="path883"
+     inkscape:connector-curvature="0"
+     style="stroke-width:0.1" />
+</svg>

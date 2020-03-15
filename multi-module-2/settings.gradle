@@ -1,0 +1,3 @@
+rootProject.name = 'multi-module-2'
+include 'backend:main'
+include 'backend:shared'

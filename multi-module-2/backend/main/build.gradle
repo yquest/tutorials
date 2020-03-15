@@ -1,0 +1,48 @@
+plugins {
+    id 'application'
+}
+dependencies {
+    implementation project(':backend:shared')
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    api "io.vertx:vertx-core:$vertxVersion"
+    implementation "io.vertx:vertx-web:$vertxVersion"
+    implementation "io.vertx:vertx-config:$vertxVersion"
+    implementation "io.vertx:vertx-config-yaml:$vertxVersion"
+    implementation "com.datastax.oss:java-driver-core:4.4.0"
+    
+    testImplementation "io.vertx:vertx-web-client:$vertxVersion"
+    testImplementation "io.vertx:vertx-junit5:$vertxVersion"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterEngineVersion"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitJupiterEngineVersion"
+    testImplementation "org.mockito:mockito-all:2.0.2-beta"
+}
+application {
+    mainClassName = 'io.vertx.core.Launcher'
+}
+distributions {
+    main {
+        baseName = 'multi-module'
+        contents {
+            from 'conf'
+        }
+    }
+}
+def mainVerticleName = 'pt.fabm.multimodule.main.WebVerticle'
+def serverPort = 8080
+def conf = "${project.rootProject.projectDir}/conf"
+
+task runApp(type: JavaExec) {
+    main = 'io.vertx.core.Launcher'
+    classpath = sourceSets.main.runtimeClasspath
+    args = ['run', mainVerticleName]
+    workingDir = '../..' as File
+    systemProperty('server.port', serverPort)
+    systemProperty('conf', conf)
+    debug = true
+}
+
+task genTsx(type: JavaExec){
+    main =  'pt.fabm.main.GenTplsKt'
+    classpath = sourceSets.main.runtimeClasspath
+    workingDir = '../..' as File
+}

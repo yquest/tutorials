@@ -1,0 +1,12 @@
+verticles:
+  dao: mock:dao
+  web: pt.fabm.multimodule.main.WebVerticle
+confs:
+  web:
+    ssr: true
+    host: 0.0.0.0
+    port: 8888
+    pdir: ../../frontend/dist
+  dao:
+    host: 0.0.0.0
+    port: 8081
