@@ -45,14 +45,14 @@ class MainVerticle : AbstractVerticle() {
     private fun loadVerticles(config: JsonObject): CompositeFuture {
         val verticles = config.getJsonObject("verticles")
         val confs = config.getJsonObject("confs")
-        val confRest = confs.getJsonObject("rest")
+        val confWeb = confs.getJsonObject("web")
         val confDAO = confs.getJsonObject("dao")
         val successRest = Future.future<String>()
         val successDAO = Future.future<String>()
         vertx.deployVerticle(verticles.getString("dao"), DeploymentOptions().setConfig(confDAO)) {
             successRest.handle(it)
         }
-        vertx.deployVerticle(verticles.getString("rest"), DeploymentOptions().setConfig(confRest)) {
+        vertx.deployVerticle(verticles.getString("web"), DeploymentOptions().setConfig(confWeb)) {
             successDAO.handle(it)
         }
         return CompositeFuture.all(successRest, successDAO)

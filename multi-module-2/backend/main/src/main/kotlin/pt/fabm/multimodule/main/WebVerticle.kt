@@ -16,6 +16,8 @@ import io.vertx.ext.web.handler.BodyHandler
 import io.vertx.ext.web.handler.StaticHandler
 import pt.fabm.main.MainServer
 import pt.fabm.main.Page
+import pt.fabm.multimodule.main.Events.DAO_EVENT_TRIGGER
+import pt.fabm.multimodule.main.Events.DAO_ITEMS
 
 
 class WebVerticle : AbstractVerticle() {
@@ -44,11 +46,10 @@ class WebVerticle : AbstractVerticle() {
         val host = config().getString("host") ?: throw error("server host required")
 
         server.requestHandler { router.handle(it) }.listen(port, host) {
-            if (it.succeeded()){
+            if (it.succeeded()) {
                 println("server started")
                 startFuture?.complete()
-            }
-            else{
+            } else {
                 println("server fails")
                 startFuture?.fail(it.cause())
             }
@@ -68,12 +69,17 @@ class WebVerticle : AbstractVerticle() {
     private fun main(rc: RoutingContext) {
         val page = Page()
 
-        fun bufferData(event: (List<String>) -> Unit) = vertx.eventBus().send(DaoVerticle.DAO_ITEMS,
-                null, DeliveryOptions().setCodecName(List::class.java.simpleName),
-                Handler<AsyncResult<Message<List<String>>>> { reply ->
-                    LOGGER.info("list ${reply.result().body()}")
-                    event(reply.result().body())
-                })
+        fun bufferData(event: (List<String>) -> Unit) {
+            vertx.eventBus().send(
+                    DAO_ITEMS,
+                    null,
+                    DeliveryOptions().setCodecName(Iterable::class.java.simpleName),
+                    Handler<AsyncResult<Message<Iterable<Example>>>> { reply ->
+                        LOGGER.info("list ${reply.result().body()}")
+                        event(reply.result().body().map { it.content }.toList())
+                    }
+            )
+        }
 
 
         bufferData { data ->
@@ -86,7 +92,7 @@ class WebVerticle : AbstractVerticle() {
 
     private fun send(rc: RoutingContext) {
         val body = rc.getBodyAsString()
-        vertx.eventBus().send(DaoVerticle.DAO_EVENT_TRIGGER, body)
+        vertx.eventBus().send(DAO_EVENT_TRIGGER, body)
         rc.response().end()
     }
 
@@ -97,7 +103,7 @@ class WebVerticle : AbstractVerticle() {
         response.headers().add("Connection", "keep-alive")
         response.headers().add("Cache-Control", "no-cache")
 
-        vertx.eventBus().consumer(DaoVerticle.DAO_EVENT_TRIGGER) { message: Message<String> ->
+        vertx.eventBus().consumer(DAO_EVENT_TRIGGER) { message: Message<String> ->
             val chunk = "data: ${JsonObject(message.body()).getString("message")}\n\n"
             if (response.closed()) {
                 LOGGER.warn("response is closed")
@@ -109,20 +115,21 @@ class WebVerticle : AbstractVerticle() {
     }
 
     private fun list(rc: RoutingContext) {
-        fun fromIterableToJsonArray(iterable:Iterable<Example>):JsonArray{
+        fun fromIterableToJsonArray(iterable: Iterable<Example>): JsonArray {
             val jsonArray = JsonArray()
-            for(current in iterable){
+            for (current in iterable) {
                 jsonArray.add(current.content)
             }
             return jsonArray
         }
+
         val response = rc.response()
-        vertx.eventBus().send(DaoVerticle.DAO_ITEMS,
+        vertx.eventBus().send(DAO_ITEMS,
                 null, DeliveryOptions().setCodecName(Iterable::class.java.simpleName),
                 Handler<AsyncResult<Message<Iterable<Example>>>> { reply ->
                     LOGGER.info("list ${reply.result().body()}")
                     response.end(
-                        reply.result().body().let(::fromIterableToJsonArray).toBuffer()
+                            reply.result().body().let(::fromIterableToJsonArray).toBuffer()
                     )
                 })
     }

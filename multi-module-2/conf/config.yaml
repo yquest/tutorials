@@ -1,6 +1,6 @@
 verticles:
   dao: pt.fabm.template.dao.DaoVerticle
-  rest: pt.fabm.multimodule.main.WebVerticle
+  web: pt.fabm.multimodule.main.WebVerticle
 confs:
   rest:
     ssr: true
