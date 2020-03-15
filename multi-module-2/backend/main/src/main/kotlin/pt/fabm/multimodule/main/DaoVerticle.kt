@@ -18,7 +18,7 @@ class DaoVerticle : AbstractVerticle() {
         val config = config()
         cassandraSession = CqlSession.builder()
                 .withCloudSecureConnectBundle(Paths.get(config.getString("path")))
-                .withAuthCredentials("francisco", "--1234Fm")
+                .withAuthCredentials("", "")
                 .withKeyspace("ks")
                 .build()
 
